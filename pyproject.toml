@@ -1,0 +1,81 @@
+[project]
+name = "dash-wrap"
+dynamic = ["version"]
+description = "Callback-identity-preserving component wrappers for Plotly Dash"
+keywords = ["plotly", "dash", "wrapper", "component", "proxy", "callback"]
+classifiers = [
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Operating System :: OS Independent",
+]
+readme = "README.md"
+license = "MIT"
+authors = [
+    { name = "Simon Niederberger", email = "s.niederberger@hotmail.com" },
+]
+maintainers = [
+    { name = "Simon Niederberger", email = "s.niederberger@hotmail.com" },
+]
+requires-python = ">=3.10"
+dependencies = [
+    "dash>=2.9",
+]
+
+[project.urls]
+Homepage = "https://github.com/saemeon/dash-wrap"
+Repository = "https://github.com/saemeon/dash-wrap"
+
+[dependency-groups]
+test = ["pytest", "pytest-cov"]
+doc = ["mkdocs", "mkdocs-material", "mkdocstrings[python]", "mike"]
+dev = [
+    "ruff",
+    "prek",
+    "ty",
+    "dash[testing]",
+    # Optional local-dev convenience: keeps chromedriver matched to the
+    # installed Chrome so integration tests don't skip on version drift.
+    # CI uses browser-actions/setup-chrome instead — this is harmless there.
+    "chromedriver-autoinstaller",
+    { include-group = "test" },
+    { include-group = "doc" },
+]
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel", "setuptools-scm>=8.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+version_scheme = "post-release"
+local_scheme = "no-local-version"
+write_to = "src/dash_wrap/_version.py"
+
+[tool.setuptools.dynamic]
+version = { attr = "dash_wrap._version.__version__" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+dash_wrap = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--cov=src --cov-report=term-missing"
+
+[tool.ty.src]
+include = ["src"]
+
+[tool.mypy]
+ignore_missing_imports = true
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W", "UP", "B", "C4", "SIM", "PERF"]
+ignore = ["E203", "E501"]
