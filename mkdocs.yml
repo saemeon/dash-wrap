@@ -1,0 +1,105 @@
+site_name: dash-wrap
+site_description: Callback-identity-preserving component wrappers for Plotly Dash
+site_author: Simon Niederberger
+site_url: https://saemeon.github.io/dash-wrap/
+
+repo_url: https://github.com/saemeon/dash-wrap
+repo_name: saemeon/dash-wrap
+
+copyright: "Copyright &copy; 2026 Simon Niederberger"
+
+nav:
+  - dash-wrap: "index.md"
+
+theme:
+  name: material
+  features:
+    - content.width.wide
+    - content.code.annotate
+    - content.code.copy
+    - content.tabs.link
+    - navigation.top
+    - navigation.tracking
+    - content.action.edit
+    - search.highlight
+    - search.suggest
+  icon:
+    repo: fontawesome/brands/github
+    edit: material/eye
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/weather-night
+        name: Switch to light mode
+
+markdown_extensions:
+  - admonition
+  - toc:
+      permalink: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+  - pymdownx.tilde
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.arithmatex
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [src]
+          options:
+            docstring_style: numpy
+            docstring_section_style: spacy
+            show_if_no_docstring: False
+            show_root_toc_entry: False
+            show_source: False
+            heading_level: 3
+            show_symbol_type_heading: True
+            show_symbol_type_toc: False
+            merge_init_into_class: True
+            show_signature: True
+            separate_signature: True
+            annotations_path: source
+            filters: ["!^_[^_]"]
+  - mike:
+      canonical_version: latest
+      alias_type: redirect
+      redirect_template: null
+      deploy_prefix: ""
+      version_selector: True
+      css_dir: css
+      javascript_dir: js
+
+watch:
+  - src
+
+remote_branch: documentation
+
+extra:
+  version:
+    provider: mike
+    alias: true
+    default: latest
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/saemeon/dash-wrap
