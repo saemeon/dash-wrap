@@ -1,0 +1,22 @@
+name: Checks
+on: [push, pull_request]
+
+jobs:
+  prek:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: astral-sh/setup-uv@v7
+      - name: Install dependencies
+        run: uv sync --group dev
+      - uses: j178/prek-action@v2
+
+  ty:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: astral-sh/setup-uv@v7
+      - name: Install dependencies
+        run: uv sync --group dev
+      - name: ty type-check
+        run: uv run ty check

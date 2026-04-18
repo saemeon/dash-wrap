@@ -1,0 +1,48 @@
+name: Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: Python ${{ matrix.python-version }} × Dash ${{ matrix.dash-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
+        dash-version: ["2.9.3", "2.14.2", "2.17.1", "3.0.4"]
+        exclude:
+          # Dash 2.9–2.17 pin older werkzeug/flask versions that
+          # conflict with modern Python builds; test the floor and
+          # current on a minimal combination.
+          - python-version: "3.13"
+            dash-version: "2.9.3"
+          - python-version: "3.13"
+            dash-version: "2.14.2"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          uv sync --group test
+          uv pip install "dash[testing]==${{ matrix.dash-version }}"
+
+      - name: Install Chrome (for DashDuo integration tests)
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: stable
+
+      - name: Run tests
+        run: uv run pytest -v
