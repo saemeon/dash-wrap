@@ -263,3 +263,66 @@ def test_proxy_props_stored_as_frozenset(make_graph):
     graph = make_graph()
     wrapper = ComponentWrapper(graph, proxy_props=("figure", "config", "figure"))
     assert wrapper._proxy_props == frozenset({"figure", "config"})
+
+
+# ---------- __dir__ forwarding ------------------------------------------
+
+
+def test_dir_includes_proxy_props(make_graph):
+    graph = make_graph()
+    wrapper = ComponentWrapper(graph, proxy_props=["figure", "config"])
+    listed = dir(wrapper)
+    assert "figure" in listed, (
+        "dir(wrapper) must surface proxied props for REPL / IDE autocomplete"
+    )
+    assert "config" in listed
+
+
+def test_dir_includes_outer_div_attrs(make_graph):
+    graph = make_graph()
+    # Set ``style`` / ``className`` so they land in ``self.__dict__`` —
+    # Dash component props only become attributes once set. This matches
+    # plain ``dir(html.Div())`` behaviour; we're not faking props that
+    # Dash wouldn't surface either.
+    wrapper = ComponentWrapper(
+        graph,
+        proxy_props=["figure"],
+        style={"p": "1px"},
+        className="card",
+    )
+    listed = dir(wrapper)
+    # Instance attrs (from kwargs) and class-level methods from
+    # html.Div / Component / object should all be visible.
+    for name in ("children", "style", "className", "to_plotly_json"):
+        assert name in listed, f"dir(wrapper) dropped outer attr {name!r}"
+
+
+def test_dir_excludes_non_proxied_inner_attrs(make_graph):
+    graph = make_graph()
+    wrapper = ComponentWrapper(graph, proxy_props=["figure"])
+    listed = dir(wrapper)
+    # ``responsive`` is a dcc.Graph prop but not in this wrapper's
+    # proxy_props, so it must not appear in dir() — whitelist model.
+    assert "responsive" not in listed
+
+
+def test_dir_is_sorted_and_unique(make_graph):
+    graph = make_graph()
+    wrapper = ComponentWrapper(graph, proxy_props=["figure"])
+    listed = dir(wrapper)
+    assert listed == sorted(listed), "dir() should be sorted"
+    assert len(listed) == len(set(listed)), "dir() should contain no duplicates"
+
+
+def test_dir_on_uninitialised_wrapper_returns_list(make_graph):
+    # Exercises the defensive branch: if a subclass forgets to call
+    # super().__init__, _proxy_props is missing — dir() must still
+    # return a valid list rather than raising AttributeError.
+    class Broken(ComponentWrapper[object]):
+        def __init__(self) -> None:  # deliberately no super()
+            pass
+
+    broken = Broken()
+    listed = dir(broken)
+    assert isinstance(listed, list)
+    assert listed == sorted(listed)

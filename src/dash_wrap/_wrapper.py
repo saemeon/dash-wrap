@@ -211,6 +211,35 @@ class _WrapperMixin:
         else:
             super().__setattr__(name, value)
 
+    def __dir__(self) -> list[str]:
+        """Return the union of the wrapper's own names and proxied names.
+
+        Makes REPL / IDE tab-completion surface the proxied props
+        (``figure``, ``config``, …) alongside the container's native
+        props (``children``, ``style``, ``className``, …), matching
+        the type-checker's view of the object.
+
+        Walks ``type(self).__mro__`` explicitly rather than calling
+        ``super().__dir__()`` — the latter routes through
+        ``object.__dir__`` which reads ``self.__class__`` (our inner
+        spoof) and would return the inner component's attributes
+        instead of the outer container's.
+
+        Pattern adapted from ``wrapt.ObjectProxy.__dir__`` (BSD-2,
+        Graham Dumpleton); specialised for our whitelist model so
+        non-proxied inner attributes don't leak.
+        """
+        names: set[str] = set(self.__dict__)
+        for cls in type(self).__mro__:
+            names.update(vars(cls))
+        try:
+            proxy = object.__getattribute__(self, "_proxy_props")
+        except AttributeError:
+            pass
+        else:
+            names.update(proxy)
+        return sorted(names)
+
     def __reduce_ex__(self, protocol: Any) -> tuple[Any, ...]:
         # Default reduce looks up ``self.__class__`` for the unpickle
         # reconstructor; our __class__ property returns the inner's

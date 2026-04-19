@@ -67,6 +67,38 @@ def test_subclass_that_skips_super_init_errors(make_graph):
         _ = broken.figure
 
 
+def test_subclass_class_attribute_shadows_proxy_forwarding(make_graph):
+    """Subclass-defined class attributes win over proxy forwarding.
+
+    ``__getattr__`` runs only when normal descriptor/class lookup
+    fails, so a subclass attribute (even one named like a proxy prop)
+    is served from the subclass, not forwarded to the inner
+    component. Documented expectation that the
+    forwarding-follows-not-shadows rule matches Python's normal
+    MRO semantics.
+    """
+
+    class Tagged(ComponentWrapper[dcc.Graph]):
+        tag = "card-v1"  # class attribute, not a proxy prop
+        figure = "CLASS-DEFINED"  # deliberately collides with Graph's prop
+
+        def __init__(self, graph: dcc.Graph) -> None:
+            super().__init__(graph, proxy_props=["figure", "config"])
+
+    graph = make_graph(figure={"data": [{"y": [1]}]})
+    tagged = Tagged(graph)
+    # tag is not in proxy_props and not on html.Div — subclass wins.
+    assert tagged.tag == "card-v1"
+    # figure IS in proxy_props, but because it's also a class-level
+    # attribute, normal lookup finds it before __getattr__ fires.
+    # The inner's figure is unchanged; the wrapper exposes the class
+    # attr. This is Python's defined attribute-resolution order —
+    # users who want proxy behaviour must not also set a class attr
+    # of the same name.
+    assert tagged.figure == "CLASS-DEFINED"
+    assert graph.figure == {"data": [{"y": [1]}]}
+
+
 # ---------- tier-2 subclassing ------------------------------------------
 
 

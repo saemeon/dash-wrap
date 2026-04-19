@@ -77,5 +77,18 @@ line-length = 88
 target-version = "py310"
 
 [tool.ruff.lint]
-select = ["E", "F", "I", "N", "W", "UP", "B", "C4", "SIM", "PERF"]
-ignore = ["E203", "E501"]
+select = ["E", "F", "I", "N", "W", "UP", "B", "C4", "SIM", "PERF", "D"]
+ignore = [
+    "E203",
+    "E501",
+    "D100",  # no module docstrings required
+    "D104",  # no package docstrings required
+    "D107",  # class-level docstring preferred over __init__
+]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401", "F403", "D400"]
+"tests/**/*.py" = ["D101", "D102", "D103"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
