@@ -893,12 +893,13 @@ to the innermost component.</p>
     <div class="doc doc-contents first">
 
         <p>Wrap <code>inner</code> in a callback-transparent container.</p>
-<p>The returned object is a <code>ComponentWrapper</code> (or a generated subclass
-of <code>container</code>) that proxies selected props to <code>inner</code>. Callbacks
-written against the wrapper resolve to the inner's id, so it behaves
-as a drop-in replacement everywhere Dash inspects a component
-instance. The return type is declared as the inner's type so that
-static type checkers see <code>wrap(graph)</code> as <code>dcc.Graph</code>.</p>
+<p>The returned object is a <code>ComponentWrapper</code> (or a generated
+subclass of <code>container</code>) that proxies selected props to
+<code>inner</code>. Callbacks written against the wrapper resolve to the
+inner's id, so it behaves as a drop-in replacement everywhere
+Dash inspects a component instance. The return type is declared
+as the inner's type so static type checkers see <code>wrap(graph)</code>
+as <code>dcc.Graph</code>.</p>
 
 
 <table>
@@ -931,16 +932,16 @@ static type checkers see <code>wrap(graph)</code> as <code>dcc.Graph</code>.</p>
             </td>
             <td class="doc-param-details">
               <div class="doc-md-description">
-                <p>Attribute names that read / write through to <code>inner</code>. When
-<code>None</code> (the default), looked up by <code>type(inner)</code> in the
-built-in + user-registered defaults. If <code>inner</code> is itself a
-wrapper, its <code>_proxy_props</code> are inherited so chained wraps
-stay transparent.</p>
+                <p>Attribute names that read / write through to <code>inner</code>.
+When <code>None</code>, looked up by <code>type(inner)</code> in the built-in +
+user-registered defaults; if <code>inner</code> is itself a wrapper,
+its <code>_proxy_props</code> are inherited so chained wraps stay
+transparent. By default None.</p>
               </div>
               <p>
                   <span class="doc-param-annotation">
                     <b>TYPE:</b>
-                      <code><span title="collections.abc.Iterable">Iterable</span>[<span title="str">str</span>] | None</code>
+                      <code><span title="collections.abc.Iterable">Iterable</span>[<span title="str">str</span>] or None</code>
                   </span>
                   <span class="doc-param-default">
                     <b>DEFAULT:</b>
@@ -957,7 +958,7 @@ stay transparent.</p>
               <div class="doc-md-description">
                 <p>Dash <code>children</code> for the outer container. When <code>None</code> the
 wrapper auto-includes <code>[inner]</code>; otherwise <code>inner</code> must
-appear somewhere in the subtree.</p>
+appear somewhere in the subtree. By default None.</p>
               </div>
               <p>
                   <span class="doc-param-annotation">
@@ -977,10 +978,10 @@ appear somewhere in the subtree.</p>
             </td>
             <td class="doc-param-details">
               <div class="doc-md-description">
-                <p>Dash container class for the outer element — <code>html.Div</code> by
-default. Alternatives such as <code>html.Figure</code> or
-<code>html.Section</code> are supported via :func:<code>make_wrapper_class</code>,
-whose results are cached.</p>
+                <p>Dash container class for the outer element. Alternatives
+such as <code>html.Figure</code> or <code>html.Section</code> are supported via
+:func:<code>make_wrapper_class</code>, whose results are cached. By
+default <code>html.Div</code>.</p>
               </div>
               <p>
                   <span class="doc-param-annotation">
@@ -1000,8 +1001,8 @@ whose results are cached.</p>
             </td>
             <td class="doc-param-details">
               <div class="doc-md-description">
-                <p>Forwarded to the container's <code>__init__</code>, e.g. <code>style</code>,
-<code>className</code>.</p>
+                <p>Forwarded to the container's <code>__init__</code> — for example
+<code>style</code>, <code>className</code>, <code>id</code>.</p>
               </div>
               <p>
                   <span class="doc-param-annotation">
@@ -1035,8 +1036,8 @@ whose results are cached.</p>
             </td>
             <td class="doc-returns-details">
               <div class="doc-md-description">
-                <p>A wrapper whose declared type is <code>type(inner)</code>. At runtime the
-object's <code>__class__</code> is spoofed to match the inner so
+                <p>A wrapper whose declared type is <code>type(inner)</code>. At runtime
+the object's <code>__class__</code> is spoofed to match the inner so
 <code>isinstance(result, type(inner))</code> is <code>True</code> while
 <code>type(result)</code> is still the wrapper class.</p>
               </div>
@@ -1062,9 +1063,9 @@ object's <code>__class__</code> is spoofed to match the inner so
             </td>
             <td class="doc-raises-details">
               <div class="doc-md-description">
-                <p>If <code>inner</code> has no id, if <code>proxy_props</code> references an attribute
-that isn't on <code>inner</code>, or if <code>children</code> is provided without
-including <code>inner</code>.</p>
+                <p>If <code>inner</code> has no id, if <code>proxy_props</code> references an
+attribute that isn't on <code>inner</code>, or if <code>children</code> is
+provided without including <code>inner</code>.</p>
               </div>
             </td>
           </tr>
@@ -1076,14 +1077,26 @@ including <code>inner</code>.</p>
             </td>
             <td class="doc-raises-details">
               <div class="doc-md-description">
-                <p>If <code>inner</code> is not a Dash Component or <code>container</code> is not a
-Component subclass.</p>
+                <p>If <code>inner</code> is not a Dash <code>Component</code> or <code>container</code> is
+not a <code>Component</code> subclass.</p>
               </div>
             </td>
           </tr>
       </tbody>
     </table>
 
+
+<details class="see-also" open>
+  <summary>See Also</summary>
+  <p>ComponentWrapper : The <code>html.Div</code>-based wrapper class;
+    subclass this for stable named wrappers.
+make_wrapper_class : Generate / retrieve the cached wrapper
+    class for a non-<code>Div</code> container.
+is_wrapped : Check whether an object is a dash-wrap wrapper.
+register_proxy_defaults : Register default <code>proxy_props</code> for a
+    component type so callers no longer need to pass them
+    explicitly.</p>
+</details>
 
 <p><span class="doc-section-title">Examples:</span></p>
     <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">dash</span><span class="w"> </span><span class="kn">import</span> <span class="n">dcc</span><span class="p">,</span> <span class="n">html</span>
@@ -1113,11 +1126,12 @@ Component subclass.</p>
 
         <p><code>html.Div</code>-based component wrapper that proxies to an inner component.</p>
 <p>Callback-transparent: <code>Output(wrapper, "prop")</code> resolves to the
-inner component's id, so callbacks written against the wrapper update
-the inner. <code>isinstance(wrapper, type(inner))</code> is <code>True</code>, and
-selected attributes read / write through to <code>inner</code> via
-<code>proxy_props</code>. <code>type(wrapper)</code> is still <code>ComponentWrapper</code> at
-the C level, so Dash serialises the outer DOM as an <code>html.Div</code>.</p>
+inner component's id, so callbacks written against the wrapper
+update the inner. <code>isinstance(wrapper, type(inner))</code> is
+<code>True</code>, and selected attributes read / write through to
+<code>inner</code> via <code>proxy_props</code>. <code>type(wrapper)</code> is still
+<code>ComponentWrapper</code> at the C level, so Dash serialises the outer
+DOM as an <code>html.Div</code>.</p>
 
 
 <table>
@@ -1134,13 +1148,14 @@ the C level, so Dash serialises the outer DOM as an <code>html.Div</code>.</p>
             </td>
             <td class="doc-param-details">
               <div class="doc-md-description">
-                <p>The component to wrap. Must be a <code>dash.development.base_component.Component</code>
-instance with a non-None <code>id</code> (string or pattern-matching dict).</p>
+                <p>The component to wrap. Must be a
+<code>dash.development.base_component.Component</code> instance with a
+non-None <code>id</code> (string or pattern-matching dict).</p>
               </div>
               <p>
                   <span class="doc-param-annotation">
                     <b>TYPE:</b>
-                      <code><span title="dash.development.base_component.Component">Component</span></code>
+                      <code><span title="dash_wrap._wrapper.T">T</span></code>
                   </span>
               </p>
             </td>
@@ -1151,8 +1166,9 @@ instance with a non-None <code>id</code> (string or pattern-matching dict).</p>
             </td>
             <td class="doc-param-details">
               <div class="doc-md-description">
-                <p>Attribute names whose reads and writes forward to <code>inner</code> via
-<code>__getattr__</code> / <code>__setattr__</code>. Validated against <code>inner._prop_names</code>.</p>
+                <p>Attribute names whose reads and writes forward to <code>inner</code>
+via <code>__getattr__</code> / <code>__setattr__</code>. Validated against
+<code>inner._prop_names</code>.</p>
               </div>
               <p>
                   <span class="doc-param-annotation">
@@ -1168,10 +1184,10 @@ instance with a non-None <code>id</code> (string or pattern-matching dict).</p>
             </td>
             <td class="doc-param-details">
               <div class="doc-md-description">
-                <p>The Dash <code>children</code> of the outer div. When <code>None</code> (default)
-the wrapper auto-includes <code>[inner]</code>. When provided, the inner
+                <p>The Dash <code>children</code> of the outer div. When <code>None</code> the
+wrapper auto-includes <code>[inner]</code>; when provided, the inner
 component must appear somewhere in the subtree — otherwise
-<code>ValueError</code> is raised.</p>
+<code>ValueError</code> is raised. By default None.</p>
               </div>
               <p>
                   <span class="doc-param-annotation">
@@ -1195,12 +1211,24 @@ component must appear somewhere in the subtree — otherwise
 <code>className</code>, <code>id</code>.</p>
               </div>
               <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><span title="typing.Any">Any</span></code>
+                  </span>
               </p>
             </td>
           </tr>
       </tbody>
     </table>
 
+
+<details class="see-also" open>
+  <summary>See Also</summary>
+  <p>wrap : The ergonomic factory — picks default <code>proxy_props</code> from
+    the registry keyed on <code>type(inner)</code>.
+make_wrapper_class : Generate an equivalent wrapper class for a
+    non-<code>Div</code> container (<code>html.Figure</code>, <code>html.Section</code>, …).</p>
+</details>
 
 <p><span class="doc-section-title">Examples:</span></p>
     <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">dash</span><span class="w"> </span><span class="kn">import</span> <span class="n">dcc</span><span class="p">,</span> <span class="n">html</span>
@@ -1256,13 +1284,12 @@ component must appear somewhere in the subtree — otherwise
     <div class="doc doc-contents first">
 
         <p>Return True if <code>obj</code> is a <code>dash-wrap</code> wrapper specifically.</p>
-<p>Checks by <code>isinstance(obj, ComponentWrapper)</code> — so this returns
-<code>True</code> for both the public <code>ComponentWrapper</code> and any generated
-subclass from :func:<code>make_wrapper_class</code>, because those share the
-<code>_WrapperMixin</code> base and are registered under the same class chain.
-It deliberately does <strong>not</strong> look at the <code>__wrapped__</code> attribute,
-so objects produced by <code>functools.wraps</code> or <code>wrapt.ObjectProxy</code>
-do not match.</p>
+<p>Checks by <code>isinstance</code> against the internal <code>_WrapperMixin</code>
+base, so this returns <code>True</code> for the public
+:class:<code>ComponentWrapper</code> <strong>and</strong> any generated subclass from
+:func:<code>make_wrapper_class</code>. It deliberately does <strong>not</strong> look at
+the <code>__wrapped__</code> attribute, so objects produced by
+<code>functools.wraps</code> or <code>wrapt.ObjectProxy</code> are excluded.</p>
 
 
 <table>
@@ -1279,7 +1306,7 @@ do not match.</p>
             </td>
             <td class="doc-param-details">
               <div class="doc-md-description">
-                <p>Any object.</p>
+                <p>The object to test.</p>
               </div>
               <p>
                   <span class="doc-param-annotation">
@@ -1317,6 +1344,12 @@ do not match.</p>
     </table>
 
 
+<details class="see-also" open>
+  <summary>See Also</summary>
+  <p>wrap : The factory that produces the objects this check matches.
+ComponentWrapper : The <code>html.Div</code>-based wrapper class.</p>
+</details>
+
 <p><span class="doc-section-title">Examples:</span></p>
     <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">dash</span><span class="w"> </span><span class="kn">import</span> <span class="n">dcc</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">dash_wrap</span><span class="w"> </span><span class="kn">import</span> <span class="n">wrap</span><span class="p">,</span> <span class="n">is_wrapped</span>
@@ -1341,9 +1374,9 @@ do not match.</p>
     <div class="doc doc-contents first">
 
         <p>Register default proxy props for <code>component_type</code>.</p>
-<p><code>wrap()</code> calls look up defaults by <code>type(inner)</code> when no explicit
-<code>proxy_props</code> argument is passed. Re-registering the same type
-replaces the prior entry.</p>
+<p>:func:<code>wrap</code> calls look up defaults by <code>type(inner)</code> when no
+explicit <code>proxy_props</code> argument is passed. Re-registering the
+same type replaces the prior entry.</p>
 
 
 <table>
@@ -1360,7 +1393,8 @@ replaces the prior entry.</p>
             </td>
             <td class="doc-param-details">
               <div class="doc-md-description">
-                <p>A subclass of <code>dash.development.base_component.Component</code>.</p>
+                <p>A subclass of
+<code>dash.development.base_component.Component</code>.</p>
               </div>
               <p>
                   <span class="doc-param-annotation">
@@ -1376,7 +1410,7 @@ replaces the prior entry.</p>
             </td>
             <td class="doc-param-details">
               <div class="doc-md-description">
-                <p>Iterable of prop names to proxy by default. Stored as a tuple.</p>
+                <p>Prop names to proxy by default. Stored as a tuple.</p>
               </div>
               <p>
                   <span class="doc-param-annotation">
@@ -1414,6 +1448,12 @@ replaces the prior entry.</p>
     </table>
 
 
+<details class="see-also" open>
+  <summary>See Also</summary>
+  <p>wrap : Factory that reads the registry when no <code>proxy_props</code>
+    argument is supplied.</p>
+</details>
+
 <p><span class="doc-section-title">Examples:</span></p>
     <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">dash_wrap</span><span class="w"> </span><span class="kn">import</span> <span class="n">register_proxy_defaults</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">class</span><span class="w"> </span><span class="nc">MyWidget</span><span class="p">(</span><span class="n">Component</span><span class="p">):</span> <span class="o">...</span>
@@ -1434,8 +1474,9 @@ replaces the prior entry.</p>
     <div class="doc doc-contents first">
 
         <p>Return a cached wrapper class for <code>container_cls</code>.</p>
-<p>The returned class subclasses <code>_WrapperMixin</code> and <code>container_cls</code>
-and is <code>Generic[T]</code>-parameterisable, so users can write
+<p>The returned class subclasses <code>_WrapperMixin</code> and
+<code>container_cls</code> and is <code>Generic[T]</code>-parameterisable, so users
+can write
 <code>class Foo(make_wrapper_class(html.Figure)[dcc.Graph]): ...</code>.</p>
 
 
@@ -1453,9 +1494,9 @@ and is <code>Generic[T]</code>-parameterisable, so users can write
             </td>
             <td class="doc-param-details">
               <div class="doc-md-description">
-                <p>A subclass of <code>dash.development.base_component.Component</code> — in
-practice, an <code>html.*</code> container class such as <code>html.Figure</code>
-or <code>html.Section</code>.</p>
+                <p>A subclass of <code>dash.development.base_component.Component</code> —
+in practice, an <code>html.*</code> container class such as
+<code>html.Figure</code> or <code>html.Section</code>.</p>
               </div>
               <p>
                   <span class="doc-param-annotation">
@@ -1486,9 +1527,9 @@ or <code>html.Section</code>.</p>
             <td class="doc-returns-details">
               <div class="doc-md-description">
                 <p>A subclass of <code>container_cls</code> and <code>_WrapperMixin</code>, cached
-per <code>container_cls</code> so repeated calls return the same class.
-For <code>container_cls=html.Div</code> this returns the public
-<code>ComponentWrapper</code>.</p>
+per <code>container_cls</code> so repeated calls return the same
+class. For <code>container_cls=html.Div</code> this returns the public
+:class:<code>ComponentWrapper</code>.</p>
               </div>
             </td>
           </tr>
@@ -1518,6 +1559,27 @@ For <code>container_cls=html.Div</code> this returns the public
           </tr>
       </tbody>
     </table>
+
+
+<details class="see-also" open>
+  <summary>See Also</summary>
+  <p>wrap : High-level factory that calls this internally and returns
+    a wrapper <em>instance</em> rather than a class.
+ComponentWrapper : The pre-built <code>html.Div</code> wrapper class.</p>
+</details>
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">dash</span><span class="w"> </span><span class="kn">import</span> <span class="n">dcc</span><span class="p">,</span> <span class="n">html</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">dash_wrap</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_wrapper_class</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">FigureWrapper</span> <span class="o">=</span> <span class="n">make_wrapper_class</span><span class="p">(</span><span class="n">html</span><span class="o">.</span><span class="n">Figure</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span><span class="w"> </span><span class="nc">CaptionedChart</span><span class="p">(</span><span class="n">FigureWrapper</span><span class="p">[</span><span class="n">dcc</span><span class="o">.</span><span class="n">Graph</span><span class="p">]):</span>
+<span class="gp">... </span>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">caption</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">graph</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="n">proxy_props</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;figure&quot;</span><span class="p">,</span> <span class="s2">&quot;config&quot;</span><span class="p">],</span>
+<span class="gp">... </span>            <span class="n">children</span><span class="o">=</span><span class="p">[</span><span class="n">graph</span><span class="p">,</span> <span class="n">html</span><span class="o">.</span><span class="n">Figcaption</span><span class="p">(</span><span class="n">caption</span><span class="p">)],</span>
+<span class="gp">... </span>        <span class="p">)</span>
+</code></pre></div>
 
 
     </div>
