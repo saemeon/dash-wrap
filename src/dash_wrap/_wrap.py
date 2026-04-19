@@ -32,53 +32,65 @@ def wrap(
 ) -> T:
     """Wrap ``inner`` in a callback-transparent container.
 
-    The returned object is a ``ComponentWrapper`` (or a generated subclass
-    of ``container``) that proxies selected props to ``inner``. Callbacks
-    written against the wrapper resolve to the inner's id, so it behaves
-    as a drop-in replacement everywhere Dash inspects a component
-    instance. The return type is declared as the inner's type so that
-    static type checkers see ``wrap(graph)`` as ``dcc.Graph``.
+    The returned object is a ``ComponentWrapper`` (or a generated
+    subclass of ``container``) that proxies selected props to
+    ``inner``. Callbacks written against the wrapper resolve to the
+    inner's id, so it behaves as a drop-in replacement everywhere
+    Dash inspects a component instance. The return type is declared
+    as the inner's type so static type checkers see ``wrap(graph)``
+    as ``dcc.Graph``.
 
     Parameters
     ----------
-    inner
+    inner : T
         The component to wrap. Must have a non-None ``id``.
-    proxy_props
-        Attribute names that read / write through to ``inner``. When
-        ``None`` (the default), looked up by ``type(inner)`` in the
-        built-in + user-registered defaults. If ``inner`` is itself a
-        wrapper, its ``_proxy_props`` are inherited so chained wraps
-        stay transparent.
-    children
+    proxy_props : Iterable[str] or None, optional
+        Attribute names that read / write through to ``inner``.
+        When ``None``, looked up by ``type(inner)`` in the built-in +
+        user-registered defaults; if ``inner`` is itself a wrapper,
+        its ``_proxy_props`` are inherited so chained wraps stay
+        transparent. By default None.
+    children : Any, optional
         Dash ``children`` for the outer container. When ``None`` the
         wrapper auto-includes ``[inner]``; otherwise ``inner`` must
-        appear somewhere in the subtree.
-    container
-        Dash container class for the outer element — ``html.Div`` by
-        default. Alternatives such as ``html.Figure`` or
-        ``html.Section`` are supported via :func:`make_wrapper_class`,
-        whose results are cached.
-    **div_kwargs
-        Forwarded to the container's ``__init__``, e.g. ``style``,
-        ``className``.
+        appear somewhere in the subtree. By default None.
+    container : type[Component], optional
+        Dash container class for the outer element. Alternatives
+        such as ``html.Figure`` or ``html.Section`` are supported via
+        :func:`make_wrapper_class`, whose results are cached. By
+        default ``html.Div``.
+    **div_kwargs : Any
+        Forwarded to the container's ``__init__`` — for example
+        ``style``, ``className``, ``id``.
 
     Returns
     -------
     T
-        A wrapper whose declared type is ``type(inner)``. At runtime the
-        object's ``__class__`` is spoofed to match the inner so
+        A wrapper whose declared type is ``type(inner)``. At runtime
+        the object's ``__class__`` is spoofed to match the inner so
         ``isinstance(result, type(inner))`` is ``True`` while
         ``type(result)`` is still the wrapper class.
 
     Raises
     ------
     ValueError
-        If ``inner`` has no id, if ``proxy_props`` references an attribute
-        that isn't on ``inner``, or if ``children`` is provided without
-        including ``inner``.
+        If ``inner`` has no id, if ``proxy_props`` references an
+        attribute that isn't on ``inner``, or if ``children`` is
+        provided without including ``inner``.
     TypeError
-        If ``inner`` is not a Dash Component or ``container`` is not a
-        Component subclass.
+        If ``inner`` is not a Dash ``Component`` or ``container`` is
+        not a ``Component`` subclass.
+
+    See Also
+    --------
+    ComponentWrapper : The ``html.Div``-based wrapper class;
+        subclass this for stable named wrappers.
+    make_wrapper_class : Generate / retrieve the cached wrapper
+        class for a non-``Div`` container.
+    is_wrapped : Check whether an object is a dash-wrap wrapper.
+    register_proxy_defaults : Register default ``proxy_props`` for a
+        component type so callers no longer need to pass them
+        explicitly.
 
     Examples
     --------
@@ -102,23 +114,27 @@ def wrap(
 def is_wrapped(obj: Any) -> bool:
     """Return True if ``obj`` is a ``dash-wrap`` wrapper specifically.
 
-    Checks by ``isinstance(obj, ComponentWrapper)`` — so this returns
-    ``True`` for both the public ``ComponentWrapper`` and any generated
-    subclass from :func:`make_wrapper_class`, because those share the
-    ``_WrapperMixin`` base and are registered under the same class chain.
-    It deliberately does **not** look at the ``__wrapped__`` attribute,
-    so objects produced by ``functools.wraps`` or ``wrapt.ObjectProxy``
-    do not match.
+    Checks by ``isinstance`` against the internal ``_WrapperMixin``
+    base, so this returns ``True`` for the public
+    :class:`ComponentWrapper` **and** any generated subclass from
+    :func:`make_wrapper_class`. It deliberately does **not** look at
+    the ``__wrapped__`` attribute, so objects produced by
+    ``functools.wraps`` or ``wrapt.ObjectProxy`` are excluded.
 
     Parameters
     ----------
-    obj
-        Any object.
+    obj : Any
+        The object to test.
 
     Returns
     -------
     bool
         ``True`` iff ``obj`` was produced by ``dash_wrap``.
+
+    See Also
+    --------
+    wrap : The factory that produces the objects this check matches.
+    ComponentWrapper : The ``html.Div``-based wrapper class.
 
     Examples
     --------

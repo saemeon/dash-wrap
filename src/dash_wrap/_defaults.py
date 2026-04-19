@@ -21,6 +21,12 @@ def _build_default_registry() -> dict[type[Component], tuple[str, ...]]:
 
     ``dash`` is a hard project dependency, so both ``dash.dcc`` and
     ``dash.dash_table`` are expected to import cleanly.
+
+    Returns
+    -------
+    dict[type[Component], tuple[str, ...]]
+        Mapping from each component type to its default proxy-props
+        tuple.
     """
     from dash import dash_table, dcc
 
@@ -52,21 +58,27 @@ def register_proxy_defaults(
 ) -> None:
     """Register default proxy props for ``component_type``.
 
-    ``wrap()`` calls look up defaults by ``type(inner)`` when no explicit
-    ``proxy_props`` argument is passed. Re-registering the same type
-    replaces the prior entry.
+    :func:`wrap` calls look up defaults by ``type(inner)`` when no
+    explicit ``proxy_props`` argument is passed. Re-registering the
+    same type replaces the prior entry.
 
     Parameters
     ----------
-    component_type
-        A subclass of ``dash.development.base_component.Component``.
-    proxy_props
-        Iterable of prop names to proxy by default. Stored as a tuple.
+    component_type : type[Component]
+        A subclass of
+        ``dash.development.base_component.Component``.
+    proxy_props : Iterable[str]
+        Prop names to proxy by default. Stored as a tuple.
 
     Raises
     ------
     TypeError
         If ``component_type`` is not a subclass of ``Component``.
+
+    See Also
+    --------
+    wrap : Factory that reads the registry when no ``proxy_props``
+        argument is supplied.
 
     Examples
     --------
@@ -86,8 +98,18 @@ def register_proxy_defaults(
 def get_proxy_defaults(component_type: type[Component]) -> tuple[str, ...]:
     """Return the registered default proxy props for ``component_type``.
 
-    Returns an empty tuple when no defaults have been registered for this
-    type. Private-ish helper exposed for ``wrap()`` and for tests; not
+    Private-ish helper exposed for :func:`wrap` and for tests; not
     part of the documented public API.
+
+    Parameters
+    ----------
+    component_type : type[Component]
+        The component type to look up.
+
+    Returns
+    -------
+    tuple[str, ...]
+        The registered default proxy props, or an empty tuple when
+        no defaults have been registered for this type.
     """
     return _DEFAULTS.get(component_type, ())

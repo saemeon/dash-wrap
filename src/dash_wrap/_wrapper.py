@@ -24,9 +24,23 @@ T = TypeVar("T", bound=Component)
 def _unpickle_wrapper(cls: type, state: dict) -> Any:
     """Reconstruct a wrapper instance during unpickling.
 
-    Creates the object with ``cls.__new__`` (skipping ``__init__``) then
-    applies the saved ``__dict__`` via :meth:`_WrapperMixin.__setstate__`.
-    Exposed at module level so pickle can resolve it by qualified name.
+    Creates the object with ``object.__new__`` (skipping ``__init__``)
+    then applies the saved ``__dict__`` via
+    :meth:`_WrapperMixin.__setstate__`. Exposed at module level so
+    pickle can resolve it by qualified name.
+
+    Parameters
+    ----------
+    cls : type
+        The runtime wrapper class (e.g. ``ComponentWrapper``).
+    state : dict
+        The instance's ``__dict__`` as produced by
+        :meth:`_WrapperMixin.__reduce_ex__`.
+
+    Returns
+    -------
+    Any
+        A freshly-reconstructed wrapper instance.
     """
     obj = object.__new__(cls)
     obj.__setstate__(state)
@@ -38,12 +52,17 @@ def _contains(tree: Any, target: Component) -> bool:
 
     Parameters
     ----------
-    tree
-        A Dash children value: a Component, a list / tuple of children,
-        a primitive (str / number), or None.
-    target
-        The component whose presence is being checked. Match is by object
-        identity (``is``), not equality.
+    tree : Any
+        A Dash ``children`` value: a ``Component``, a list / tuple of
+        children, a primitive (``str`` / number), or ``None``.
+    target : Component
+        The component whose presence is being checked. Match is by
+        object identity (``is``), not equality.
+
+    Returns
+    -------
+    bool
+        ``True`` iff ``target`` is found anywhere in ``tree``.
     """
     if tree is target:
         return True
@@ -212,28 +231,38 @@ class ComponentWrapper(_WrapperMixin, html.Div, Generic[T]):
     """``html.Div``-based component wrapper that proxies to an inner component.
 
     Callback-transparent: ``Output(wrapper, "prop")`` resolves to the
-    inner component's id, so callbacks written against the wrapper update
-    the inner. ``isinstance(wrapper, type(inner))`` is ``True``, and
-    selected attributes read / write through to ``inner`` via
-    ``proxy_props``. ``type(wrapper)`` is still ``ComponentWrapper`` at
-    the C level, so Dash serialises the outer DOM as an ``html.Div``.
+    inner component's id, so callbacks written against the wrapper
+    update the inner. ``isinstance(wrapper, type(inner))`` is
+    ``True``, and selected attributes read / write through to
+    ``inner`` via ``proxy_props``. ``type(wrapper)`` is still
+    ``ComponentWrapper`` at the C level, so Dash serialises the outer
+    DOM as an ``html.Div``.
 
     Parameters
     ----------
-    inner
-        The component to wrap. Must be a ``dash.development.base_component.Component``
-        instance with a non-None ``id`` (string or pattern-matching dict).
-    proxy_props
-        Attribute names whose reads and writes forward to ``inner`` via
-        ``__getattr__`` / ``__setattr__``. Validated against ``inner._prop_names``.
-    children
-        The Dash ``children`` of the outer div. When ``None`` (default)
-        the wrapper auto-includes ``[inner]``. When provided, the inner
+    inner : T
+        The component to wrap. Must be a
+        ``dash.development.base_component.Component`` instance with a
+        non-None ``id`` (string or pattern-matching dict).
+    proxy_props : Iterable[str]
+        Attribute names whose reads and writes forward to ``inner``
+        via ``__getattr__`` / ``__setattr__``. Validated against
+        ``inner._prop_names``.
+    children : Any, optional
+        The Dash ``children`` of the outer div. When ``None`` the
+        wrapper auto-includes ``[inner]``; when provided, the inner
         component must appear somewhere in the subtree — otherwise
-        ``ValueError`` is raised.
-    **div_kwargs
+        ``ValueError`` is raised. By default None.
+    **div_kwargs : Any
         Forwarded to ``html.Div.__init__`` — for example ``style``,
         ``className``, ``id``.
+
+    See Also
+    --------
+    wrap : The ergonomic factory — picks default ``proxy_props`` from
+        the registry keyed on ``type(inner)``.
+    make_wrapper_class : Generate an equivalent wrapper class for a
+        non-``Div`` container (``html.Figure``, ``html.Section``, …).
 
     Examples
     --------

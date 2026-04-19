@@ -29,29 +29,49 @@ _CLASS_CACHE: dict[type[Component], type[Any]] = {html.Div: ComponentWrapper}
 def make_wrapper_class(container_cls: type[Component]) -> type[Any]:
     """Return a cached wrapper class for ``container_cls``.
 
-    The returned class subclasses ``_WrapperMixin`` and ``container_cls``
-    and is ``Generic[T]``-parameterisable, so users can write
+    The returned class subclasses ``_WrapperMixin`` and
+    ``container_cls`` and is ``Generic[T]``-parameterisable, so users
+    can write
     ``class Foo(make_wrapper_class(html.Figure)[dcc.Graph]): ...``.
 
     Parameters
     ----------
-    container_cls
-        A subclass of ``dash.development.base_component.Component`` — in
-        practice, an ``html.*`` container class such as ``html.Figure``
-        or ``html.Section``.
+    container_cls : type[Component]
+        A subclass of ``dash.development.base_component.Component`` —
+        in practice, an ``html.*`` container class such as
+        ``html.Figure`` or ``html.Section``.
 
     Returns
     -------
     type
         A subclass of ``container_cls`` and ``_WrapperMixin``, cached
-        per ``container_cls`` so repeated calls return the same class.
-        For ``container_cls=html.Div`` this returns the public
-        ``ComponentWrapper``.
+        per ``container_cls`` so repeated calls return the same
+        class. For ``container_cls=html.Div`` this returns the public
+        :class:`ComponentWrapper`.
 
     Raises
     ------
     TypeError
         If ``container_cls`` is not a subclass of ``Component``.
+
+    See Also
+    --------
+    wrap : High-level factory that calls this internally and returns
+        a wrapper *instance* rather than a class.
+    ComponentWrapper : The pre-built ``html.Div`` wrapper class.
+
+    Examples
+    --------
+    >>> from dash import dcc, html
+    >>> from dash_wrap import make_wrapper_class
+    >>> FigureWrapper = make_wrapper_class(html.Figure)
+    >>> class CaptionedChart(FigureWrapper[dcc.Graph]):
+    ...     def __init__(self, graph, caption):
+    ...         super().__init__(
+    ...             graph,
+    ...             proxy_props=["figure", "config"],
+    ...             children=[graph, html.Figcaption(caption)],
+    ...         )
     """
     if not (isinstance(container_cls, type) and issubclass(container_cls, Component)):
         raise TypeError(
