@@ -1,5 +1,8 @@
-"""Unit tests for :func:`dash_wrap.wrap`, the proxy-defaults registry,
-and :func:`dash_wrap.is_wrapped`."""
+"""Unit tests for the primary factory and its helpers.
+
+Covers :func:`dash_wrap.wrap`, the proxy-defaults registry, and
+:func:`dash_wrap.is_wrapped`.
+"""
 
 from __future__ import annotations
 

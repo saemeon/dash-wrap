@@ -1,7 +1,9 @@
-"""Unit tests for ``ComponentWrapper`` / ``_WrapperMixin``: construction,
-adapter methods, attribute proxy, nested-chain behaviour.
+"""Unit tests for ``ComponentWrapper`` and ``_WrapperMixin``.
 
-Entries tagged ``(N)`` in CLAUDE.md exercise nested-wrapper cases."""
+Covers construction, adapter methods, attribute proxy, and nested-chain
+behaviour. Entries tagged ``(N)`` in CLAUDE.md exercise nested-wrapper
+cases.
+"""
 
 from __future__ import annotations
 

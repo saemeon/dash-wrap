@@ -1,5 +1,8 @@
-"""Unit tests for user subclassing of ``ComponentWrapper`` and the
-tier-2 factory-generated classes."""
+"""Unit tests for user subclassing.
+
+Covers both tier-1 (``ComponentWrapper``) and tier-2
+(factory-generated non-Div wrapper classes) subclassing.
+"""
 
 from __future__ import annotations
 

@@ -1,5 +1,7 @@
-"""Unit tests for :func:`dash_wrap.make_wrapper_class` — the non-Div
-subclassing factory and its class cache."""
+"""Unit tests for :func:`dash_wrap.make_wrapper_class`.
+
+Covers the non-Div subclassing factory and its class cache.
+"""
 
 from __future__ import annotations
 
