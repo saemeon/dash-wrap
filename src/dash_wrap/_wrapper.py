@@ -68,7 +68,7 @@ def _contains(tree: Any, target: Component) -> bool:
         return True
     if isinstance(tree, Component):
         return _contains(getattr(tree, "children", None), target)
-    if isinstance(tree, (list, tuple)):
+    if isinstance(tree, list | tuple):
         return any(_contains(c, target) for c in tree)
     return False
 
@@ -148,7 +148,10 @@ class _WrapperMixin:
         # At runtime the call resolves to the container class's __init__
         # (e.g. html.Div.__init__), which accepts ``children`` and the
         # other Div props.
-        super().__init__(children=children, **container_kwargs)  # ty: ignore[unknown-argument]
+        super().__init__(
+            children=children,  # ty: ignore[unknown-argument]
+            **container_kwargs,
+        )
 
     def _set_random_id(self) -> Any:
         """Return the innermost component's id without setting one on self.
