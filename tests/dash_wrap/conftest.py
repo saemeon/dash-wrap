@@ -6,6 +6,23 @@ import pytest
 from dash import Dash, dcc
 
 
+def pytest_setup_options():
+    """Chrome options used by DashDuo's Selenium driver.
+
+    ``--no-sandbox`` + ``--disable-dev-shm-usage`` are required on
+    GitHub's ubuntu runners (and most container environments) — without
+    them Chrome exits immediately with SessionNotCreatedException.
+    """
+    from selenium.webdriver.chrome.options import Options
+
+    options = Options()
+    options.add_argument("--headless=new")
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-gpu")
+    options.add_argument("--disable-dev-shm-usage")
+    return options
+
+
 @pytest.fixture
 def make_graph():
     """Return a factory for fresh ``dcc.Graph`` instances.
