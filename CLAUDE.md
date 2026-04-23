@@ -4,9 +4,17 @@
 `brand-toolkit` monorepo; ready for extraction to its own GitHub repo
 and PyPI release.
 
-- 256 tests passing, 100% line coverage on `src/`.
+- 262 tests passing (249 unit + 13 DashDuo integration), 100%
+  line coverage on `src/`.
 - ruff clean (including `D` pydocstyle), ruff format clean, ty clean.
 - CI workflows written for `test`, `lint`, `publish`, `docs`.
+- [tests/dash_wrap/conftest.py](tests/dash_wrap/conftest.py) defines
+  `pytest_setup_options` to configure Chrome (`--headless=new`,
+  `--no-sandbox`, `--disable-dev-shm-usage`, `--disable-gpu`) —
+  required for DashDuo to launch on GitHub's ubuntu runners and in
+  most container environments. Without these, Chrome exits
+  immediately with `SessionNotCreatedException`. Load-bearing — do
+  not remove.
 
 This doc serves two audiences:
 
@@ -869,6 +877,34 @@ uses `browser-actions/setup-chrome@v1`, which always matches the
 driver and passes the probe.
 
 **Cost to switch later**: trivial.
+
+### DashDuo needs `--no-sandbox` on GitHub runners
+
+**Where**:
+[tests/dash_wrap/conftest.py](tests/dash_wrap/conftest.py)
+`pytest_setup_options`.
+
+**Ambiguity**: The Chrome-availability probe in
+`test_callbacks.py` passes on `ubuntu-latest` (it launches Chrome
+with `--no-sandbox`), but DashDuo's own Selenium driver does not
+pass that flag by default, so every integration test raised
+`SessionNotCreatedException: Chrome instance exited` in CI while
+the module was not skipped.
+
+**Decision**: Added a `pytest_setup_options` hook in conftest.py
+that returns `ChromeOptions` with `--headless=new`, `--no-sandbox`,
+`--disable-gpu`, `--disable-dev-shm-usage`. Dash's pytest plugin
+picks up this hook and uses the returned options for every DashDuo
+session.
+
+**Rationale**: `--no-sandbox` is required on GitHub's ubuntu
+runners (and most container environments) because Chrome's
+namespace sandbox needs privileges the runner doesn't grant.
+`--disable-dev-shm-usage` avoids crashes on small `/dev/shm`
+volumes. Local macOS / desktop Linux runs are unaffected — the
+flags are harmless there.
+
+**Cost to switch later**: trivial (delete the function).
 
 ### Dash `_prop_names` on instances, not classes, in Dash 4.x
 
