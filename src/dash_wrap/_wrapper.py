@@ -330,4 +330,6 @@ class ComponentWrapper(_WrapperMixin, html.Div, Generic[T]):
                 proxy_props = inner._proxy_props
             else:
                 proxy_props = get_proxy_defaults(type(inner))
-        super().__init__(inner, proxy_props=proxy_props, children=children, **div_kwargs)
+        super().__init__(
+            inner, proxy_props=proxy_props, children=children, **div_kwargs
+        )
