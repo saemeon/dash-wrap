@@ -123,6 +123,34 @@ def test_wrap_wrap_explicit_overrides_inheritance(make_graph):
     assert outer._proxy_props == frozenset({"figure"})
 
 
+# ---------- ComponentWrapper proxy_props=None (optional default) ----------
+
+
+def test_componentwrapper_no_proxy_props_uses_registry(make_graph):
+    graph = make_graph()
+    wrapper = ComponentWrapper(graph)
+    assert set(wrapper._proxy_props) == {"figure", "config", "responsive"}
+
+
+def test_componentwrapper_explicit_proxy_props_overrides_registry(make_graph):
+    graph = make_graph()
+    wrapper = ComponentWrapper(graph, proxy_props=["figure"])
+    assert wrapper._proxy_props == frozenset({"figure"})
+
+
+def test_componentwrapper_no_proxy_props_unknown_type():
+    store = dcc.Store(id="s", data={})
+    wrapper = ComponentWrapper(store)
+    assert wrapper._proxy_props == frozenset()
+
+
+def test_componentwrapper_no_proxy_props_inherits_from_inner_wrapper(make_graph):
+    graph = make_graph()
+    inner = wrap(graph)
+    outer = ComponentWrapper(inner)
+    assert outer._proxy_props == inner._proxy_props
+
+
 # ---------- is_wrapped ----------------------------------------------------
 
 

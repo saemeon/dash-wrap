@@ -276,10 +276,13 @@ class ComponentWrapper(_WrapperMixin, html.Div, Generic[T]):
         The component to wrap. Must be a
         ``dash.development.base_component.Component`` instance with a
         non-None ``id`` (string or pattern-matching dict).
-    proxy_props : Iterable[str]
+    proxy_props : Iterable[str] or None, optional
         Attribute names whose reads and writes forward to ``inner``
         via ``__getattr__`` / ``__setattr__``. Validated against
-        ``inner._prop_names``.
+        ``inner._prop_names``. When ``None``, looked up by
+        ``type(inner)`` in the built-in and user-registered defaults
+        (same registry as :func:`wrap`); if ``inner`` is itself a
+        wrapper, its ``_proxy_props`` are inherited. By default None.
     children : Any, optional
         The Dash ``children`` of the outer div. When ``None`` the
         wrapper auto-includes ``[inner]``; when provided, the inner
@@ -303,7 +306,6 @@ class ComponentWrapper(_WrapperMixin, html.Div, Generic[T]):
     >>> graph = dcc.Graph(id="x")
     >>> chart = ComponentWrapper(
     ...     graph,
-    ...     proxy_props=["figure", "config"],
     ...     children=[html.H3("Revenue"), graph],
     ...     className="card",
     ... )
@@ -312,3 +314,20 @@ class ComponentWrapper(_WrapperMixin, html.Div, Generic[T]):
     >>> isinstance(chart, html.Div)
     True
     """
+
+    def __init__(
+        self,
+        inner: T,
+        *,
+        proxy_props: Iterable[str] | None = None,
+        children: Any = None,
+        **div_kwargs: Any,
+    ) -> None:
+        if proxy_props is None:
+            from ._defaults import get_proxy_defaults
+
+            if isinstance(inner, _WrapperMixin):
+                proxy_props = inner._proxy_props
+            else:
+                proxy_props = get_proxy_defaults(type(inner))
+        super().__init__(inner, proxy_props=proxy_props, children=children, **div_kwargs)
