@@ -1168,12 +1168,19 @@ non-None <code>id</code> (string or pattern-matching dict).</p>
               <div class="doc-md-description">
                 <p>Attribute names whose reads and writes forward to <code>inner</code>
 via <code>__getattr__</code> / <code>__setattr__</code>. Validated against
-<code>inner._prop_names</code>.</p>
+<code>inner._prop_names</code>. When <code>None</code>, looked up by
+<code>type(inner)</code> in the built-in and user-registered defaults
+(same registry as :func:<code>wrap</code>); if <code>inner</code> is itself a
+wrapper, its <code>_proxy_props</code> are inherited. By default None.</p>
               </div>
               <p>
                   <span class="doc-param-annotation">
                     <b>TYPE:</b>
-                      <code><span title="collections.abc.Iterable">Iterable</span>[<span title="str">str</span>]</code>
+                      <code><span title="collections.abc.Iterable">Iterable</span>[<span title="str">str</span>] or None</code>
+                  </span>
+                  <span class="doc-param-default">
+                    <b>DEFAULT:</b>
+                      <code>None</code>
                   </span>
               </p>
             </td>
@@ -1215,6 +1222,10 @@ component must appear somewhere in the subtree — otherwise
                     <b>TYPE:</b>
                       <code><span title="typing.Any">Any</span></code>
                   </span>
+                  <span class="doc-param-default">
+                    <b>DEFAULT:</b>
+                      <code>{}</code>
+                  </span>
               </p>
             </td>
           </tr>
@@ -1236,7 +1247,6 @@ make_wrapper_class : Generate an equivalent wrapper class for a
 <span class="gp">&gt;&gt;&gt; </span><span class="n">graph</span> <span class="o">=</span> <span class="n">dcc</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">chart</span> <span class="o">=</span> <span class="n">ComponentWrapper</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">graph</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">proxy_props</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;figure&quot;</span><span class="p">,</span> <span class="s2">&quot;config&quot;</span><span class="p">],</span>
 <span class="gp">... </span>    <span class="n">children</span><span class="o">=</span><span class="p">[</span><span class="n">html</span><span class="o">.</span><span class="n">H3</span><span class="p">(</span><span class="s2">&quot;Revenue&quot;</span><span class="p">),</span> <span class="n">graph</span><span class="p">],</span>
 <span class="gp">... </span>    <span class="n">className</span><span class="o">=</span><span class="s2">&quot;card&quot;</span><span class="p">,</span>
 <span class="gp">... </span><span class="p">)</span>
