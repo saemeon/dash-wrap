@@ -1,0 +1,15 @@
+# Written by copier, committed with the package: it is what `copier update`
+# reads to know which template, which version, and which answers. Edit the
+# answers here and run `copier update` rather than re-rendering by hand.
+_commit: e7bba0c
+_src_path: gh:saemeon/pytemplate
+author_email: s.niederberger@hotmail.com
+author_name: Simon Niederberger
+description: Callback-identity-preserving component wrappers for Plotly Dash
+github_user: saemeon
+keywords: ''
+license: MIT
+module_name: dash_wrap
+package_name: dash-wrap
+python_min: '3.10'
+use_docs: true

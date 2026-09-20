@@ -1,0 +1,25 @@
+{
+    "python.testing.pytestArgs": [
+        "tests"
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true,
+    "terminal.integrated.env.linux": {
+        "PYTHONPATH": "${workspaceFolder}/src:${env:PYTHONPATH}"
+    },
+    "terminal.integrated.env.windows": {
+        "PYTHONPATH": "${workspaceFolder}\\src;${env:PYTHONPATH}"
+    },
+    "terminal.integrated.env.osx": {
+        "PYTHONPATH": "${workspaceFolder}/src:${env:PYTHONPATH}"
+    },
+    "python.envFile": "${workspaceFolder}/.vscode/windows.env",
+    "jupyter.notebookFileRoot": "${workspaceFolder}/src",
+    "cSpell.enableFiletypes": [
+        "!python"
+    ],
+    "yaml.customTags": [
+        "!reference sequence"
+    ],
+    "python.languageServer": "None"
+}
