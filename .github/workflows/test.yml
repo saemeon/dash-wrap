@@ -40,7 +40,7 @@ jobs:
           uv pip install "dash[testing]==${{ matrix.dash-version }}"
 
       - name: Install Chrome (for DashDuo integration tests)
-        uses: browser-actions/setup-chrome@v1
+        uses: browser-actions/setup-chrome@v2
         with:
           chrome-version: stable
 
