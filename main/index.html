@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -29,7 +29,7 @@
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
@@ -781,16 +781,16 @@ inspects it.</p>
 
 <span class="n">app</span> <span class="o">=</span> <span class="n">Dash</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
-<span class="n">graph</span> <span class="o">=</span> <span class="n">dcc</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;revenue&quot;</span><span class="p">,</span> <span class="n">figure</span><span class="o">=</span><span class="n">make_fig</span><span class="p">())</span>
-<span class="n">chart</span> <span class="o">=</span> <span class="n">wrap</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">children</span><span class="o">=</span><span class="p">[</span><span class="n">graph</span><span class="p">,</span> <span class="n">html</span><span class="o">.</span><span class="n">Small</span><span class="p">(</span><span class="s2">&quot;Source: ABS&quot;</span><span class="p">)])</span>
+<span class="n">graph</span> <span class="o">=</span> <span class="n">dcc</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">"revenue"</span><span class="p">,</span> <span class="n">figure</span><span class="o">=</span><span class="n">make_fig</span><span class="p">())</span>
+<span class="n">chart</span> <span class="o">=</span> <span class="n">wrap</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">children</span><span class="o">=</span><span class="p">[</span><span class="n">graph</span><span class="p">,</span> <span class="n">html</span><span class="o">.</span><span class="n">Small</span><span class="p">(</span><span class="s2">"Source: ABS"</span><span class="p">)])</span>
 
 <span class="n">app</span><span class="o">.</span><span class="n">layout</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">Div</span><span class="p">([</span>
-    <span class="n">html</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="s2">&quot;Refresh&quot;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;btn&quot;</span><span class="p">),</span>
+    <span class="n">html</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="s2">"Refresh"</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="s2">"btn"</span><span class="p">),</span>
     <span class="n">chart</span><span class="p">,</span>
 <span class="p">])</span>
 
 
-<span class="nd">@app</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="n">Output</span><span class="p">(</span><span class="n">chart</span><span class="p">,</span> <span class="s2">&quot;figure&quot;</span><span class="p">),</span> <span class="n">Input</span><span class="p">(</span><span class="s2">&quot;btn&quot;</span><span class="p">,</span> <span class="s2">&quot;n_clicks&quot;</span><span class="p">))</span>
+<span class="nd">@app</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="n">Output</span><span class="p">(</span><span class="n">chart</span><span class="p">,</span> <span class="s2">"figure"</span><span class="p">),</span> <span class="n">Input</span><span class="p">(</span><span class="s2">"btn"</span><span class="p">,</span> <span class="s2">"n_clicks"</span><span class="p">))</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">make_fig</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
 </code></pre></div>
@@ -801,33 +801,33 @@ inspects it.</p>
 <h3 id="card-styled-graph">Card-styled graph<a class="headerlink" href="#card-styled-graph" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="n">chart</span> <span class="o">=</span> <span class="n">wrap</span><span class="p">(</span>
     <span class="n">graph</span><span class="p">,</span>
-    <span class="n">children</span><span class="o">=</span><span class="p">[</span><span class="n">html</span><span class="o">.</span><span class="n">H3</span><span class="p">(</span><span class="s2">&quot;Revenue&quot;</span><span class="p">),</span> <span class="n">graph</span><span class="p">,</span> <span class="n">html</span><span class="o">.</span><span class="n">Small</span><span class="p">(</span><span class="s2">&quot;Source: ABS&quot;</span><span class="p">)],</span>
-    <span class="n">className</span><span class="o">=</span><span class="s2">&quot;card&quot;</span><span class="p">,</span>
-    <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;padding&quot;</span><span class="p">:</span> <span class="s2">&quot;16px&quot;</span><span class="p">,</span> <span class="s2">&quot;borderRadius&quot;</span><span class="p">:</span> <span class="s2">&quot;8px&quot;</span><span class="p">},</span>
+    <span class="n">children</span><span class="o">=</span><span class="p">[</span><span class="n">html</span><span class="o">.</span><span class="n">H3</span><span class="p">(</span><span class="s2">"Revenue"</span><span class="p">),</span> <span class="n">graph</span><span class="p">,</span> <span class="n">html</span><span class="o">.</span><span class="n">Small</span><span class="p">(</span><span class="s2">"Source: ABS"</span><span class="p">)],</span>
+    <span class="n">className</span><span class="o">=</span><span class="s2">"card"</span><span class="p">,</span>
+    <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s2">"padding"</span><span class="p">:</span> <span class="s2">"16px"</span><span class="p">,</span> <span class="s2">"borderRadius"</span><span class="p">:</span> <span class="s2">"8px"</span><span class="p">},</span>
 <span class="p">)</span>
 </code></pre></div>
 <h3 id="semantic-html-figure-figcaption">Semantic HTML: <code>&lt;figure&gt;</code> + <code>&lt;figcaption&gt;</code><a class="headerlink" href="#semantic-html-figure-figcaption" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="n">chart</span> <span class="o">=</span> <span class="n">wrap</span><span class="p">(</span>
     <span class="n">graph</span><span class="p">,</span>
     <span class="n">container</span><span class="o">=</span><span class="n">html</span><span class="o">.</span><span class="n">Figure</span><span class="p">,</span>
-    <span class="n">children</span><span class="o">=</span><span class="p">[</span><span class="n">graph</span><span class="p">,</span> <span class="n">html</span><span class="o">.</span><span class="n">Figcaption</span><span class="p">(</span><span class="s2">&quot;Revenue by year, 2018–2024&quot;</span><span class="p">)],</span>
+    <span class="n">children</span><span class="o">=</span><span class="p">[</span><span class="n">graph</span><span class="p">,</span> <span class="n">html</span><span class="o">.</span><span class="n">Figcaption</span><span class="p">(</span><span class="s2">"Revenue by year, 2018–2024"</span><span class="p">)],</span>
 <span class="p">)</span>
 </code></pre></div>
 <h3 id="input-inline-error-message">Input + inline error message<a class="headerlink" href="#input-inline-error-message" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">dash</span><span class="w"> </span><span class="kn">import</span> <span class="n">dcc</span>
-<span class="n">input_</span> <span class="o">=</span> <span class="n">dcc</span><span class="o">.</span><span class="n">Input</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;email&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;email&quot;</span><span class="p">)</span>
+<span class="n">input_</span> <span class="o">=</span> <span class="n">dcc</span><span class="o">.</span><span class="n">Input</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">"email"</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">"email"</span><span class="p">)</span>
 <span class="n">form_field</span> <span class="o">=</span> <span class="n">wrap</span><span class="p">(</span>
     <span class="n">input_</span><span class="p">,</span>
-    <span class="n">children</span><span class="o">=</span><span class="p">[</span><span class="n">input_</span><span class="p">,</span> <span class="n">html</span><span class="o">.</span><span class="n">Span</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;email-err&quot;</span><span class="p">,</span> <span class="n">className</span><span class="o">=</span><span class="s2">&quot;error&quot;</span><span class="p">)],</span>
+    <span class="n">children</span><span class="o">=</span><span class="p">[</span><span class="n">input_</span><span class="p">,</span> <span class="n">html</span><span class="o">.</span><span class="n">Span</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">"email-err"</span><span class="p">,</span> <span class="n">className</span><span class="o">=</span><span class="s2">"error"</span><span class="p">)],</span>
 <span class="p">)</span>
 </code></pre></div>
 <h3 id="datatable-toolbar">DataTable + toolbar<a class="headerlink" href="#datatable-toolbar" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">dash</span><span class="w"> </span><span class="kn">import</span> <span class="n">dash_table</span>
-<span class="n">table</span> <span class="o">=</span> <span class="n">dash_table</span><span class="o">.</span><span class="n">DataTable</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;orders&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">rows</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">cols</span><span class="p">)</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">dash_table</span><span class="o">.</span><span class="n">DataTable</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">"orders"</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">rows</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">cols</span><span class="p">)</span>
 <span class="n">block</span> <span class="o">=</span> <span class="n">wrap</span><span class="p">(</span>
     <span class="n">table</span><span class="p">,</span>
-    <span class="n">children</span><span class="o">=</span><span class="p">[</span><span class="n">html</span><span class="o">.</span><span class="n">Div</span><span class="p">([</span><span class="n">html</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="s2">&quot;Export&quot;</span><span class="p">),</span> <span class="n">html</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="s2">&quot;Refresh&quot;</span><span class="p">)]),</span> <span class="n">table</span><span class="p">],</span>
-    <span class="n">className</span><span class="o">=</span><span class="s2">&quot;table-block&quot;</span><span class="p">,</span>
+    <span class="n">children</span><span class="o">=</span><span class="p">[</span><span class="n">html</span><span class="o">.</span><span class="n">Div</span><span class="p">([</span><span class="n">html</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="s2">"Export"</span><span class="p">),</span> <span class="n">html</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="s2">"Refresh"</span><span class="p">)]),</span> <span class="n">table</span><span class="p">],</span>
+    <span class="n">className</span><span class="o">=</span><span class="s2">"table-block"</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
 <h3 id="stable-named-wrapper-subclassing">Stable named wrapper (subclassing)<a class="headerlink" href="#stable-named-wrapper-subclassing" title="Permanent link">&para;</a></h3>
@@ -837,9 +837,9 @@ inspects it.</p>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graph</span><span class="p">:</span> <span class="n">dcc</span><span class="o">.</span><span class="n">Graph</span><span class="p">,</span> <span class="n">title</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">graph</span><span class="p">,</span>
-            <span class="n">proxy_props</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;figure&quot;</span><span class="p">,</span> <span class="s2">&quot;config&quot;</span><span class="p">],</span>
+            <span class="n">proxy_props</span><span class="o">=</span><span class="p">[</span><span class="s2">"figure"</span><span class="p">,</span> <span class="s2">"config"</span><span class="p">],</span>
             <span class="n">children</span><span class="o">=</span><span class="p">[</span><span class="n">html</span><span class="o">.</span><span class="n">H3</span><span class="p">(</span><span class="n">title</span><span class="p">),</span> <span class="n">graph</span><span class="p">],</span>
-            <span class="n">className</span><span class="o">=</span><span class="s2">&quot;card&quot;</span><span class="p">,</span>
+            <span class="n">className</span><span class="o">=</span><span class="s2">"card"</span><span class="p">,</span>
         <span class="p">)</span>
 </code></pre></div>
 <h2 id="how-it-works">How it works<a class="headerlink" href="#how-it-works" title="Permanent link">&para;</a></h2>
@@ -1101,8 +1101,8 @@ register_proxy_defaults : Register default <code>proxy_props</code> for a
 <p><span class="doc-section-title">Examples:</span></p>
     <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">dash</span><span class="w"> </span><span class="kn">import</span> <span class="n">dcc</span><span class="p">,</span> <span class="n">html</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">dash_wrap</span><span class="w"> </span><span class="kn">import</span> <span class="n">wrap</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">graph</span> <span class="o">=</span> <span class="n">dcc</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;revenue&quot;</span><span class="p">,</span> <span class="n">figure</span><span class="o">=</span><span class="p">{})</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">chart</span> <span class="o">=</span> <span class="n">wrap</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">children</span><span class="o">=</span><span class="p">[</span><span class="n">graph</span><span class="p">,</span> <span class="n">html</span><span class="o">.</span><span class="n">Small</span><span class="p">(</span><span class="s2">&quot;Source: ABS&quot;</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">graph</span> <span class="o">=</span> <span class="n">dcc</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">"revenue"</span><span class="p">,</span> <span class="n">figure</span><span class="o">=</span><span class="p">{})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">chart</span> <span class="o">=</span> <span class="n">wrap</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">children</span><span class="o">=</span><span class="p">[</span><span class="n">graph</span><span class="p">,</span> <span class="n">html</span><span class="o">.</span><span class="n">Small</span><span class="p">(</span><span class="s2">"Source: ABS"</span><span class="p">)])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">chart</span><span class="p">,</span> <span class="n">dcc</span><span class="o">.</span><span class="n">Graph</span><span class="p">)</span>
 <span class="go">True</span>
 </code></pre></div>
@@ -1244,11 +1244,11 @@ make_wrapper_class : Generate an equivalent wrapper class for a
 <p><span class="doc-section-title">Examples:</span></p>
     <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">dash</span><span class="w"> </span><span class="kn">import</span> <span class="n">dcc</span><span class="p">,</span> <span class="n">html</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">dash_wrap</span><span class="w"> </span><span class="kn">import</span> <span class="n">ComponentWrapper</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">graph</span> <span class="o">=</span> <span class="n">dcc</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">graph</span> <span class="o">=</span> <span class="n">dcc</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">"x"</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">chart</span> <span class="o">=</span> <span class="n">ComponentWrapper</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">graph</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">children</span><span class="o">=</span><span class="p">[</span><span class="n">html</span><span class="o">.</span><span class="n">H3</span><span class="p">(</span><span class="s2">&quot;Revenue&quot;</span><span class="p">),</span> <span class="n">graph</span><span class="p">],</span>
-<span class="gp">... </span>    <span class="n">className</span><span class="o">=</span><span class="s2">&quot;card&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">children</span><span class="o">=</span><span class="p">[</span><span class="n">html</span><span class="o">.</span><span class="n">H3</span><span class="p">(</span><span class="s2">"Revenue"</span><span class="p">),</span> <span class="n">graph</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="n">className</span><span class="o">=</span><span class="s2">"card"</span><span class="p">,</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">chart</span><span class="p">,</span> <span class="n">dcc</span><span class="o">.</span><span class="n">Graph</span><span class="p">)</span>
 <span class="go">True</span>
@@ -1363,7 +1363,7 @@ ComponentWrapper : The <code>html.Div</code>-based wrapper class.</p>
 <p><span class="doc-section-title">Examples:</span></p>
     <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">dash</span><span class="w"> </span><span class="kn">import</span> <span class="n">dcc</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">dash_wrap</span><span class="w"> </span><span class="kn">import</span> <span class="n">wrap</span><span class="p">,</span> <span class="n">is_wrapped</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">graph</span> <span class="o">=</span> <span class="n">dcc</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">graph</span> <span class="o">=</span> <span class="n">dcc</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">"x"</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">is_wrapped</span><span class="p">(</span><span class="n">wrap</span><span class="p">(</span><span class="n">graph</span><span class="p">))</span>
 <span class="go">True</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">is_wrapped</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
@@ -1467,7 +1467,7 @@ same type replaces the prior entry.</p>
 <p><span class="doc-section-title">Examples:</span></p>
     <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">dash_wrap</span><span class="w"> </span><span class="kn">import</span> <span class="n">register_proxy_defaults</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">class</span><span class="w"> </span><span class="nc">MyWidget</span><span class="p">(</span><span class="n">Component</span><span class="p">):</span> <span class="o">...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">register_proxy_defaults</span><span class="p">(</span><span class="n">MyWidget</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="s2">&quot;status&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">register_proxy_defaults</span><span class="p">(</span><span class="n">MyWidget</span><span class="p">,</span> <span class="p">[</span><span class="s2">"value"</span><span class="p">,</span> <span class="s2">"status"</span><span class="p">])</span>
 </code></pre></div>
 
 
@@ -1586,7 +1586,7 @@ ComponentWrapper : The pre-built <code>html.Div</code> wrapper class.</p>
 <span class="gp">... </span>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">caption</span><span class="p">):</span>
 <span class="gp">... </span>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
 <span class="gp">... </span>            <span class="n">graph</span><span class="p">,</span>
-<span class="gp">... </span>            <span class="n">proxy_props</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;figure&quot;</span><span class="p">,</span> <span class="s2">&quot;config&quot;</span><span class="p">],</span>
+<span class="gp">... </span>            <span class="n">proxy_props</span><span class="o">=</span><span class="p">[</span><span class="s2">"figure"</span><span class="p">,</span> <span class="s2">"config"</span><span class="p">],</span>
 <span class="gp">... </span>            <span class="n">children</span><span class="o">=</span><span class="p">[</span><span class="n">graph</span><span class="p">,</span> <span class="n">html</span><span class="o">.</span><span class="n">Figcaption</span><span class="p">(</span><span class="n">caption</span><span class="p">)],</span>
 <span class="gp">... </span>        <span class="p">)</span>
 </code></pre></div>
@@ -1675,7 +1675,7 @@ ComponentWrapper : The pre-built <code>html.Div</code> wrapper class.</p>
       <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["content.width.wide", "content.code.annotate", "content.code.copy", "content.tabs.link", "navigation.top", "navigation.tracking", "content.action.edit", "search.highlight", "search.suggest"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"alias": true, "default": "latest", "provider": "mike"}}</script>
     
     
-      <script src="assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>
