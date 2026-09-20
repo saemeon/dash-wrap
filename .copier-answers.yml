@@ -1,7 +1,7 @@
 # Written by copier, committed with the package: it is what `copier update`
 # reads to know which template, which version, and which answers. Edit the
 # answers here and run `copier update` rather than re-rendering by hand.
-_commit: e7bba0c
+_commit: 0b90b7c
 _src_path: gh:saemeon/pytemplate
 author_email: s.niederberger@hotmail.com
 author_name: Simon Niederberger
